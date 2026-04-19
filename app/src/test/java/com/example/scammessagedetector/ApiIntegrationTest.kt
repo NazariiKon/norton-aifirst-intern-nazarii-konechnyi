@@ -5,7 +5,6 @@ import com.example.scammessagedetector.data.remote.GroqRetrofitClient
 import com.example.scammessagedetector.data.repository.ScamAnalyzerRepositoryImpl
 import com.example.scammessagedetector.domain.model.Result
 import com.example.scammessagedetector.domain.usecase.AnalyzeScamMessageUseCase
-import com.example.scammessagedetector.domain.usecase.GetExampleScamsUseCase
 import com.example.scammessagedetector.utils.Constants
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertNotNull
@@ -15,12 +14,11 @@ import org.junit.Test
 
 /**
  * Integration test that makes actual API calls to Groq.
- * This replaces the manual testing logic in TestViewModel.
  */
 class ApiIntegrationTest {
 
     private lateinit var analyzeUseCase: AnalyzeScamMessageUseCase
-    private lateinit var examplesUseCase: GetExampleScamsUseCase
+    private lateinit var repository: ScamAnalyzerRepositoryImpl
 
     @Before
     fun setUp() {
@@ -30,9 +28,8 @@ class ApiIntegrationTest {
             apiKey = Constants.GROQ_API_KEY,
             modelName = Constants.GROQ_MODEL
         )
-        val repository = ScamAnalyzerRepositoryImpl(analyzer)
+        repository = ScamAnalyzerRepositoryImpl(analyzer)
         analyzeUseCase = AnalyzeScamMessageUseCase(repository)
-        examplesUseCase = GetExampleScamsUseCase(repository)
     }
 
     @Test
@@ -53,15 +50,13 @@ class ApiIntegrationTest {
     }
 
     @Test
-    fun `test actual API examples retrieval`() = runTest {
+    fun `test actual examples retrieval`() = runTest {
         // When
-        val result = examplesUseCase.execute()
+        val result = repository.getExampleScams()
 
         // Then
-        println("Examples Result: $result")
         assertTrue("Expected Success but got $result", result is Result.Success)
         val examples = (result as Result.Success).data
         assertTrue("Examples list should not be empty", examples.isNotEmpty())
-        examples.forEach { println("Example: ${it.title}") }
     }
 }

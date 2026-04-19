@@ -16,3 +16,9 @@ val SuspiciousYellow = Color(0xFFFFC107)
 val DangerousRed = Color(0xFFF44336)
 val BackgroundDark = Color(0xFF121212)
 val CardBackground = Color(0xFF1E1E1E)
+
+// Norton Genie inspired colors
+val NortonYellow = Color(0xFFF7F24D)
+val NortonBlue = Color(0xFF4285F4)
+val NortonGray = Color(0xFFF5F5F5)
+val NortonDarkGray = Color(0xFF757575)

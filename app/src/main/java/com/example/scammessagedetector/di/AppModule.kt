@@ -1,5 +1,6 @@
 package com.example.scammessagedetector.di
 
+import com.example.scammessagedetector.BuildConfig
 import com.example.scammessagedetector.data.analyzer.ApiScamAnalyzer
 import com.example.scammessagedetector.data.remote.GroqRetrofitClient
 import com.example.scammessagedetector.data.remote.api.GroqApiService
@@ -39,7 +40,7 @@ object AppModule {
     fun provideScamAnalyzer(groqApiService: GroqApiService): ScamAnalyzer {
         return ApiScamAnalyzer(
             groqApiService = groqApiService,
-            apiKey = Constants.GROQ_API_KEY,
+            apiKey = BuildConfig.GROQ_API_KEY,
             modelName = Constants.GROQ_MODEL
         )
     }

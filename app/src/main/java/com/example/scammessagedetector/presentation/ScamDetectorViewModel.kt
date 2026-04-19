@@ -1,5 +1,6 @@
 package com.example.scammessagedetector.presentation
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scammessagedetector.domain.model.ExampleScam
@@ -29,7 +30,7 @@ class ScamDetectorViewModel @Inject constructor(
     }
 
     fun onMessageChange(newMessage: String) {
-        // Clear result when user types new message
+        // Clear result and error when user types new message
         _uiState.update { it.copy(messageInput = newMessage, analysisResult = null, error = null) }
     }
 
@@ -39,7 +40,7 @@ class ScamDetectorViewModel @Inject constructor(
         // Basic validation for empty input
         if (message.isBlank()) return
 
-        // Limit message length to avoid LLM context issues (simple validation)
+        // Limit message length to avoid LLM context issues
         if (message.length > 2000) {
             _uiState.update { it.copy(error = "Message is too long (max 2000 chars)") }
             return
@@ -47,7 +48,7 @@ class ScamDetectorViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-
+            
             when (val result = analyzeScamMessageUseCase.execute(message)) {
                 is Result.Success -> {
                     _uiState.update { it.copy(analysisResult = result.data, isLoading = false) }
@@ -55,9 +56,7 @@ class ScamDetectorViewModel @Inject constructor(
                 is Result.Error -> {
                     _uiState.update { it.copy(error = result.exception.message, isLoading = false) }
                 }
-                is Result.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
-                }
+                else -> {}
             }
         }
     }
@@ -68,17 +67,18 @@ class ScamDetectorViewModel @Inject constructor(
                 is Result.Success -> {
                     _uiState.update { it.copy(examples = result.data) }
                 }
-                is Result.Error -> {
-                    // Handle error if needed
-                }
-                is Result.Loading -> {
-                    // Handle loading if needed
-                }
+                is Result.Error -> { /* Handle error if needed */ }
+                else -> {}
             }
         }
     }
 }
 
+/**
+ * UI State for the Scam Detector screen.
+ * Marked as @Immutable to help Compose optimize recompositions.
+ */
+@Immutable
 data class ScamDetectorUiState(
     val messageInput: String = "",
     val isLoading: Boolean = false,

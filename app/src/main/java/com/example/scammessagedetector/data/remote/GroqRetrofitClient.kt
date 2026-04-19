@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.concurrent.TimeUnit
 
 // Factory for creating the Groq API service
 class GroqRetrofitClient {
@@ -26,9 +27,12 @@ class GroqRetrofitClient {
                 level = HttpLoggingInterceptor.Level.BODY
             }
             
-            // Create OkHttp client with logging
+            // Create OkHttp client with increased timeouts for AI processing
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS) // AI models may take time to generate response
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .build()
             
             // Create Retrofit instance

@@ -3,6 +3,7 @@ package com.example.scammessagedetector.data.analyzer
 import com.example.scammessagedetector.data.remote.api.GroqApiService
 import com.example.scammessagedetector.data.remote.dto.ChatCompletionRequest
 import com.example.scammessagedetector.domain.analyzer.ScamAnalyzer
+import com.example.scammessagedetector.domain.analyzer.ScamAnalyzerConfig
 import com.example.scammessagedetector.domain.model.Result
 import com.example.scammessagedetector.domain.model.ScamAnalysisResult
 import kotlinx.serialization.json.Json
@@ -17,37 +18,19 @@ class ApiScamAnalyzer(
     private val modelName: String
 ) : ScamAnalyzer {
     
-    // System prompt that defines the analyzer's behavior
-    // Instructs the LLM to respond with JSON containing risk assessment
-    private val systemPrompt = """
-        You are a scam detection expert. Analyze the provided message for scam indicators.
-        
-        Return a JSON object with this exact structure:
-        {
-            "riskLevel": "SAFE" or "SUSPICIOUS" or "DANGEROUS",
-            "confidenceScore": 0.0-1.0,
-            "explanation": "Brief reason for this assessment"
-        }
-        
-        Guidelines:
-        - SAFE: Legitimate message with no red flags
-        - SUSPICIOUS: Some warning signs (urgency, unusual requests)
-        - DANGEROUS: Multiple scam indicators (phishing, fake authority, malicious links)
-    """.trimIndent()
-    
     override suspend fun analyze(message: String): Result<ScamAnalysisResult> {
         return try {
-            // Build the chat completion request
+            // Build the chat completion request using domain-defined prompts
             val request = ChatCompletionRequest(
                 model = modelName,
                 messages = listOf(
                     ChatCompletionRequest.Message(
                         role = "system",
-                        content = systemPrompt
+                        content = ScamAnalyzerConfig.SYSTEM_PROMPT
                     ),
                     ChatCompletionRequest.Message(
                         role = "user",
-                        content = "Analyze this message for scam indicators:\n\n$message"
+                        content = ScamAnalyzerConfig.buildUserPrompt(message)
                     )
                 ),
                 temperature = 0.3f, // Low temperature for consistent results

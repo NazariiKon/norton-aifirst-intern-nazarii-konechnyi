@@ -1,58 +1,68 @@
-# Scam Message Detector 🛡️
+# Scam Message Detector Prototype (Norton AI-First Assignment)
 
-An AI-powered Android application that detects scam messages (SMS, Emails, Phishing URLs) using Large Language Models (LLM) via the Groq API. Inspired by Norton Genie.
-
-## 🚀 Features
-- **AI Analysis**: Get real-time risk assessment (Safe, Suspicious, Dangerous).
-- **Explanation**: Understand *why* a message is flagged as a scam.
-- **Example Scams**: Tap on pre-defined scam examples to see how the detector works.
-- **Clean Architecture**: Built using Domain-Driven Design (DDD) principles.
-
-## 🛠 Tech Stack
-- **Language**: Kotlin
-- **UI**: Jetpack Compose
-- **DI**: Hilt (Dependency Injection)
-- **Networking**: Retrofit & OkHttp
-- **AI Engine**: Groq API (LLM)
-- **Testing**: JUnit, Mockito, Kotlin Coroutines Test
+### Project Overview
+I chose **Option B: Scam Message Detector**. 
+This app helps users identify scam messages (SMS, Email, or URLs). It uses the **Groq LLM API** to provide a risk level (Safe, Suspicious, or Dangerous), a confidence score, and a detailed explanation.
 
 ---
 
-## 🏁 How to Run the App
-
-### 1. Prerequisites
-- Android Studio Ladybug (or newer).
-- An active internet connection (for API calls).
-
-### 2. API Key Configuration
-The app comes with a **pre-configured API key** in `Constants.kt` for convenience, so you can run it immediately. 
-
-> **Note**: For production apps, never hardcode API keys. In a real scenario, this would be handled via backend services or secure secrets management.
-
-### 3. Build and Launch
-1. Connect your Android device or start an Emulator.
-2. Press the **Run** button (green arrow) in Android Studio.
-3. The app will install and open automatically.
+### Setup Instructions
+1.  **Clone** this repository.
+2.  Open the project in **Android Studio** (Koala or later).
+3.  Add your Groq API key to the `local.properties` file in the root folder:
+    `GROQ_API_KEY=your_key_here`
+4.  **Sync Gradle** and run the app on an Android device or emulator (API 26+).
+5.  To run tests: Open the terminal and type `./gradlew test`.
 
 ---
 
-## 🧪 How to Run Tests
+### Screenshots
+*   **[Screenshot 1: Main Screen - Input Area and Genie Orb]**
+*   **[Screenshot 2: Scam Examples - Clickable chips]**
+*   **[Screenshot 3: Analysis Result - Risk assessment and explanation]**
 
-### Unit Tests (Logic Only)
-These tests check the business logic without making real network calls.
-- **Via Android Studio**: Right-click on `app/src/test/java/.../domain/usecase/AnalyzeScamMessageUseCaseTest.kt` and select **Run**.
-- **Via Terminal**:
-  ```bash
-  ./gradlew :app:testDebugUnitTest
-  ```
-
-### Integration Tests (Real API Calls)
-These tests make actual calls to the Groq API to verify everything is working.
-- **Via Android Studio**: Open `app/src/test/java/.../ApiIntegrationTest.kt` and click the play button next to the class name.
 ---
 
-## 📂 Project Structure
-- `domain/`: Business logic, Models, and Use Cases.
-- `data/`: API implementation, Repository implementation, and DTOs.
-- `presentation/`: ViewModel and UI State management.
-- `ui/`: Jetpack Compose components and screens.
+### AI Interaction Log
+
+**1. Prompt: "create a compose screen for scam detection inspired by norton genie. use a big yellow 'Scan now' button at the bottom and a gray card for input. add a blue paste button in the top right of the input area. make it look clean with material 3"**
+*   **Commentary:** Instead of building the UI manually, I described the visual hierarchy and brand-specific elements (Genie style). The AI generated the structure directly in the file, which I then refined.
+
+**2. Prompt: "connect this to groq api. generate the data classes and a hilt-compatible analyzer implementation. i need a system prompt that forces the llm to return ONLY json with riskLevel, confidenceScore, and explanation fields. keep temperature low for consistency."**
+*   **Commentary:** I used the AI to handle the boilerplate of networking. The key here was "forcing" the JSON output via the system prompt to ensure the app could parse the AI response without errors.
+
+**3. Prompt: "add a LazyRow with scam examples like phishing and fake delivery above the scan button. tapping an example should update the messageInput state in the viewmodel. use realistic scam messages for the mock data so i can test it"**
+*   **Commentary:** I delegated the data generation and list implementation to the AI. It quickly provided both the UI code and a set of diverse scam messages for testing.
+
+**4. Prompt: "write unit tests for ScamDetectorViewModel using mockito. verify that analyzing a message updates the ui state correctly on success. use StandardTestDispatcher and advanceUntilIdle to handle the coroutine execution since we have delays"**
+*   **Commentary:** Testing coroutines can be tricky. I explicitly told the AI to use `StandardTestDispatcher` and `advanceUntilIdle`, demonstrating that I control the testing strategy while the AI writes the implementation.
+
+**5. Prompt: "add a 2000 char limit to the input in the viewmodel. also make the result area scrollable using verticalScroll so long explanations dont overflow. optimize the ui state class with @Immutable to avoid unnecessary recompositions"**
+*   **Commentary:** This prompt shows architectural guidance. I identified specific production-level issues (token limits, UX overflow, and Compose performance) and directed the AI to apply best-practice solutions.
+
+---
+
+### AI Code Review Summary
+I used the AI to review my code. Based on the feedback:
+*   **Security:** Moved API Key to `local.properties` + `BuildConfig`.
+*   **L10n:** Moved hardcoded strings to `res/values/strings.xml`.
+*   **Reliability:** Set `readTimeout` to 60s in Retrofit to handle slow AI response times.
+*   **Stability:** Added `@Immutable` to `ScamDetectorUiState` to skip unnecessary UI recompositions.
+*   **UX:** Added a `verticalScroll` and `derivedStateOf` logic to handle long explanations.
+
+---
+
+### Reflection
+What I learned:
+*   AI is great for speed, but you need to be very specific about data formats (like JSON) and architecture.
+*   Human review is mandatory for "mobile-specific" issues like scroll behavior and credential security.
+*   Writing clear, context-rich prompts (Prompt Engineering) is a key skill for a modern engineer.
+
+What I would do differently:
+*   I'd add a local regex layer to detect obvious scams immediately offline.
+*   I'd use a local database (Room) to cache previous scan results.
+
+---
+
+### Demo Video
+[Link to your YouTube/Loom video here]

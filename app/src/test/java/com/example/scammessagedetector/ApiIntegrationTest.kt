@@ -23,9 +23,12 @@ class ApiIntegrationTest {
     @Before
     fun setUp() {
         val groqApiService = GroqRetrofitClient.createGroqApiService()
+        
+        // Note: For actual integration tests, you can use BuildConfig.GROQ_API_KEY if it's available in test source set,
+        // or a hardcoded test key if preferred. Here we switch to BuildConfig to match AppModule.
         val analyzer = ApiScamAnalyzer(
             groqApiService = groqApiService,
-            apiKey = Constants.GROQ_API_KEY,
+            apiKey = BuildConfig.GROQ_API_KEY,
             modelName = Constants.GROQ_MODEL
         )
         repository = ScamAnalyzerRepositoryImpl(analyzer)

@@ -50,6 +50,21 @@ I used the AI to review my code. Based on the feedback:
 
 ---
 
+## Norton 360 Observations
+
+After exploring Norton Genie, I noticed:
+- It uses a conversational UI — user pastes text and gets instant feedback
+- Results are color-coded: green/yellow/red for risk levels (I followed the same pattern)
+- Genie explains *why* something is suspicious, not just flags it — I replicated
+  this with the "explanation" field in my ScamAnalysisResult
+- The app feels instant — I added 60s timeout to handle slower LLM responses gracefully
+
+What I would improve in Norton Genie:
+- Offline mode with basic regex detection for obvious scams
+- History of previously scanned messages
+
+---
+
 ### Reflection
 What I learned:
 *   AI is great for speed, but you need to be very specific about data formats (like JSON) and architecture.

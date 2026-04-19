@@ -6,19 +6,17 @@ import com.example.scammessagedetector.domain.model.Result
 import com.example.scammessagedetector.domain.model.ScamAnalysisResult
 import com.example.scammessagedetector.domain.repository.ScamAnalyzerRepository
 
-// Implementation of ScamAnalyzerRepository
-// Delegates analysis to the ScamAnalyzer and provides example scams
+/**
+ * Implementation of ScamAnalyzerRepository.
+ * Delegates analysis to the ScamAnalyzer and provides example scams.
+ */
 class ScamAnalyzerRepositoryImpl(
     private val scamAnalyzer: ScamAnalyzer
 ) : ScamAnalyzerRepository {
     
     override suspend fun analyzeMessage(message: String): Result<ScamAnalysisResult> {
-        // Validate input
-        if (message.isBlank()) {
-            return Result.Error(Exception("Message cannot be empty"))
-        }
-        
-        // Delegate to the analyzer (could be API-based, heuristic, etc.)
+        // Validation is handled in the UseCase layer
+        // This layer focus on delegating to the analyzer (could be API-based, heuristic, etc.)
         return scamAnalyzer.analyze(message)
     }
     
@@ -31,7 +29,9 @@ class ScamAnalyzerRepositoryImpl(
     }
     
     companion object {
-        // Hardcoded example scam messages for demonstration
+        /**
+         * Hardcoded example scam messages for demonstration.
+         */
         private val providedExamples = listOf(
             ExampleScam(
                 title = "Phishing Email",

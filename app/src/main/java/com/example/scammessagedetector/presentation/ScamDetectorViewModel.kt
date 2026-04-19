@@ -37,18 +37,10 @@ class ScamDetectorViewModel @Inject constructor(
     fun analyzeMessage() {
         val message = _uiState.value.messageInput
         
-        // Basic validation for empty input
-        if (message.isBlank()) return
-
-        // Limit message length to avoid LLM context issues
-        if (message.length > 2000) {
-            _uiState.update { it.copy(error = "Message is too long (max 2000 chars)") }
-            return
-        }
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             
+            // Validation is now handled inside the UseCase layer
             when (val result = analyzeScamMessageUseCase.execute(message)) {
                 is Result.Success -> {
                     _uiState.update { it.copy(analysisResult = result.data, isLoading = false) }
@@ -56,7 +48,9 @@ class ScamDetectorViewModel @Inject constructor(
                 is Result.Error -> {
                     _uiState.update { it.copy(error = result.exception.message, isLoading = false) }
                 }
-                else -> {}
+                else -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                }
             }
         }
     }

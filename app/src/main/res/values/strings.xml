@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ScamMessage Detector</string>
-    <string name="input_label">Enter text</string>
+    <string name="input_label">Enter text or URL</string>
     <string name="input_placeholder">Paste suspicious message here...</string>
     <string name="paste_button">Paste</string>
     <string name="examples_label">Examples</string>

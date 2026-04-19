@@ -17,9 +17,7 @@ This app helps users identify scam messages (SMS, Email, or URLs). It uses the *
 ---
 
 ### Screenshots
-*   **[Screenshot 1: Main Screen - Input Area and Genie Orb]**
-*   **[Screenshot 2: Scam Examples - Clickable chips]**
-*   **[Screenshot 3: Analysis Result - Risk assessment and explanation]**
+<img src="screenshots/1.png" width="250" style="height:auto;" alt="Screenshot 1: Main Screen - Input Area and Genie Orb"><img src="screenshots/2.png" width="250" style="height:auto;" alt="Screenshot 2: Scam Examples - Clickable chips"><img src="screenshots/3.png" width="250" style="height:auto;" alt="Screenshot 3: Analysis Result - Risk assessment and explanation">  
 
 ---
 
@@ -65,4 +63,3 @@ What I would do differently:
 ---
 
 ### Demo Video
-[Link to your YouTube/Loom video here]

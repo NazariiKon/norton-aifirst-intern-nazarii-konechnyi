@@ -16,4 +16,3 @@
 local.properties
 *.log
 *.hprof
-Constants.kt

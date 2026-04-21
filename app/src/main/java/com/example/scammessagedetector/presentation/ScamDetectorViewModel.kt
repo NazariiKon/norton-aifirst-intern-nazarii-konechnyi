@@ -36,7 +36,7 @@ class ScamDetectorViewModel @Inject constructor(
 
     fun analyzeMessage() {
         val message = _uiState.value.messageInput
-        
+
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             

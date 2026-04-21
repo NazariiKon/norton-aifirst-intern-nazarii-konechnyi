@@ -105,7 +105,7 @@ fun ScamDetectorScreen(
                     fontSize = 18.sp
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
@@ -325,7 +325,7 @@ fun ResultCard(result: com.example.scammessagedetector.domain.model.ScamAnalysis
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(
-                        R.string.confidence_format, 
+                        R.string.confidence_format,
                         (result.confidenceScore * 100).toInt()
                     ),
                     fontSize = 12.sp,

@@ -57,9 +57,9 @@ class ScamDetectorViewModelTest {
     fun `analyzeMessage() does nothing if message is empty`() = runTest {
         viewModel.onMessageChange("")
         viewModel.analyzeMessage()
-        
+
         testDispatcher.scheduler.advanceUntilIdle()
-        
+
         verify(analyzeUseCase, never()).execute(any())
     }
 

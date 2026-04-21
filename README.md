@@ -50,7 +50,7 @@ I used the AI to review my code. Based on the feedback:
 
 ---
 
-## Norton 360 Observations
+### Norton 360 Observations
 
 After exploring Norton Genie, I noticed:
 - It uses a conversational UI — user pastes text and gets instant feedback
@@ -78,3 +78,4 @@ What I would do differently:
 ---
 
 ### Demo Video
+[Watch on YouTube](https://youtu.be/vPtWdLEZ9Uo)
